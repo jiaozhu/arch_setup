@@ -13,6 +13,7 @@ while getopts ":a:r:b:p:h" o; do case "${o}" in
 esac done
 
 # DEFAULTS:
+[ -z "$dotfilesrepo" ] && dotfilesrepo="https://github.com/jiaozhu/dotfiles" && repobranch="master"
 [ -z "$progsfile" ] && progsfile="https://raw.githubusercontent.com/jiaozhu/wabs/master/progs.csv"
 [ -z "$aurhelper" ] && aurhelper="yay"
 [ -z "$repobranch" ] && repobranch="master"
@@ -104,6 +105,16 @@ pipinstall() { \
 	yes | pip install "$1"
 	}
 
+putgitrepo() { # Downlods a gitrepo $1 and places the files in $2 only overwriting conflicts
+	dialog --infobox "Downloading and installing config files..." 4 60
+	[ -z "$3" ] && branch="master" || branch="$repobranch"
+	dir=$(mktemp -d)
+	[ ! -d "$2" ] && mkdir -p "$2" && chown -R "$name:wheel" "$2"
+	chown -R "$name:wheel" "$dir"
+	sudo -u "$name" git clone --bare https://github.com/jiaozhu/dotfiles.git /home/$name/.dotfiles
+	sudo -u "$name" /usr/bin/git --git-dir=/home/$name/.dotfiles/ --work-tree=/home/$name checkout
+	}
+
 installationloop() { \
 	([ -f "$progsfile" ] && cp "$progsfile" /tmp/progs.csv) || curl -Ls "$progsfile" | sed '/^#/d' > /tmp/progs.csv
 	total=$(wc -l < /tmp/progs.csv)
@@ -119,6 +130,19 @@ installationloop() { \
 		esac
 	done < /tmp/progs.csv ;}
 
+serviceinit() { for service in "$@"; do
+	dialog --infobox "Enabling \"$service\"..." 4 40
+	systemctl enable "$service"
+	systemctl start "$service"
+	done ;}
+
+systembeepoff() { dialog --infobox "Getting rid of that retarded error beep sound..." 10 50
+	rmmod pcspkr
+	echo "blacklist pcspkr" > /etc/modprobe.d/nobeep.conf ;}
+
+resetpulse() { dialog --infobox "Reseting Pulseaudio..." 4 50
+	killall pulseaudio
+	sudo -n "$name" pulseaudio --start ;}
 
 finalize(){ \
 	dialog --title "All done!" --msgbox "Congrats! Provided there were no hidden errors, the script completed successfully and all the programs and configuration files should be in place.\\n\\nTo run the new graphical environment, log out and log back in as your new user, then run the command \"startx\" to start the graphical environment (it will start automatically in tty1).\\n\\n.t Wythe" 12 80
@@ -161,13 +185,26 @@ grep "ILoveCandy" /etc/pacman.conf >/dev/null || sed -i "/#VerbosePkgLists/a ILo
 # Use all cores for compilation.
 sed -i "s/-j2/-j$(nproc)/;s/^#MAKEFLAGS/MAKEFLAGS/" /etc/makepkg.conf
 
-manualinstall $aurhelper || error "Failed to install AUR helper."
+
+manualinstall $
+ || error "Failed to install AUR helper."
 
 # The command that does all the installing. Reads the progs.csv file and
 # installs each needed program the way required. Be sure to run this only after
 # the user has been created and has priviledges to run sudo without a password
 # and all build dependencies are installed.
 installationloop
+
+putgitrepo "$dotfilesrepo" "/home/$name" "$repobranch"
+
+# Pulseaudio, if/when initially installed, often needs a restart to work immediately.
+[ -f /usr/bin/pulseaudio ] && resetpulse
+
+# Enable services here.
+serviceinit NetworkManager cronie
+
+# Most important command! Get rid of the beep!
+systembeepoff
 
 # This line, overwriting the `newperms` command above will allow the user to run
 # serveral important commands, `shutdown`, `reboot`, updating, etc. without a password.
