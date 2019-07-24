@@ -13,7 +13,7 @@ while getopts ":a:r:b:p:h" o; do case "${o}" in
 esac done
 
 # DEFAULTS:
-[ -z "$progsfile" ] && progsfile=""
+[ -z "$progsfile" ] && progsfile="https://raw.githubusercontent.com/jiaozhu/wabs/master/progs.csv"
 [ -z "$aurhelper" ] && aurhelper="yay"
 [ -z "$repobranch" ] && repobranch="master"
 
