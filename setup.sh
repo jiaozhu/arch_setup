@@ -1,5 +1,5 @@
 #!/bin/sh
-# Wythe's Arch Boostrapping Script (WABS)
+# Wythe's Arch Setup Script (WASS)
 # by Wythe Chao <hi@latecho.me>
 # License: GNU GPLv3
 
@@ -14,7 +14,7 @@ esac done
 
 # DEFAULTS:
 [ -z "$dotfilesrepo" ] && dotfilesrepo="https://github.com/jiaozhu/dotfiles" && repobranch="master"
-[ -z "$progsfile" ] && progsfile="https://raw.githubusercontent.com/jiaozhu/wabs/master/progs.csv"
+[ -z "$progsfile" ] && progsfile="https://raw.githubusercontent.com/jiaozhu/arch_setup/master/progs.csv"
 [ -z "$aurhelper" ] && aurhelper="yay"
 [ -z "$repobranch" ] && repobranch="master"
 
@@ -23,7 +23,7 @@ esac done
 error() { clear; printf "ERROR:\\n%s\\n" "$1"; exit;}
 
 welcomemsg() { \
-	dialog --title "Welcome!" --msgbox "Welcome to Wythe's Arch Bootstrapping Script!\\n\\nThis script will automatically install a fully-featured i3wm Arch Linux desktop, which I use as my main machine.\\n\\n-Wythe" 10 60
+	dialog --title "Welcome!" --msgbox "Welcome to Wythe's Arch Setup Script!\\n\\nThis script will automatically install a fully-featured i3wm Arch Linux desktop, which I use as my main machine.\\n\\n-Wythe" 10 60
 }
 
 getuserandpass() { \
@@ -74,18 +74,18 @@ refreshkeys() { \
 	}
 
 newperms() { # Set special sudoers settings for install (or after).
-	sed -i "/#WABS/d" /etc/sudoers
-	echo "$* #WABS" >> /etc/sudoers ;
+	sed -i "/#WAAS/d" /etc/sudoers
+	echo "$* #WAAS" >> /etc/sudoers ;
 }
 
 maininstall() { # Installs all needed programs from main repo.
-	dialog --title "WABS Installation" --infobox "Installing \`$1\` ($n of $total). $1 $2" 5 70
+	dialog --title "WAAS Installation" --infobox "Installing \`$1\` ($n of $total). $1 $2" 5 70
 	pacman --noconfirm --needed -S "$1" >/dev/null 2>&1
 	}
 
 gitmakeinstall() {
 	dir=$(mktemp -d)
-	dialog --title "WABS Installation" --infobox "Installing \`$(basename "$1")\` ($n of $total) via \`git\` and \`make\`. $(basename "$1") $2" 5 70
+	dialog --title "WAAS Installation" --infobox "Installing \`$(basename "$1")\` ($n of $total) via \`git\` and \`make\`. $(basename "$1") $2" 5 70
 	git clone --depth 1 "$1" "$dir" >/dev/null 2>&1
 	cd "$dir" || exit
 	make >/dev/null 2>&1
@@ -94,13 +94,13 @@ gitmakeinstall() {
 
 
 aurinstall() { \
-	dialog --title "WABS Installation" --infobox "Installing \`$1\` ($n of $total) from the AUR. $1 $2" 5 70
+	dialog --title "WAAS Installation" --infobox "Installing \`$1\` ($n of $total) from the AUR. $1 $2" 5 70
 	echo "$aurinstalled" | grep "^$1$" >/dev/null 2>&1 && return
 	sudo -u "$name" $aurhelper -S --noconfirm "$1" >/dev/null 2>&1
 	}
 
 pipinstall() { \
-	dialog --title "WABS Installation" --infobox "Installing the Python package \`$1\` ($n of $total). $1 $2" 5 70
+	dialog --title "WAAS Installation" --infobox "Installing the Python package \`$1\` ($n of $total). $1 $2" 5 70
 	command -v pip || pacman -S --noconfirm --needed python-pip >/dev/null 2>&1
 	yes | pip install "$1"
 	}
@@ -108,9 +108,6 @@ pipinstall() { \
 putgitrepo() { # Downlods a gitrepo $1 and places the files in $2 only overwriting conflicts
 	dialog --infobox "Downloading and installing config files..." 4 60
 	[ -z "$3" ] && branch="master" || branch="$repobranch"
-	dir=$(mktemp -d)
-	[ ! -d "$2" ] && mkdir -p "$2" && chown -R "$name:wheel" "$2"
-	chown -R "$name:wheel" "$dir"
 	mkdir -p /root/Backup/$name
 	mv /home/$name/.* /root/Backup/$name
 	sudo -u "$name" git clone --bare https://github.com/jiaozhu/dotfiles /home/$name/.dotfiles
@@ -178,7 +175,7 @@ pacman --noconfirm --needed -S base-devel git >/dev/null 2>&1
 
 # Allow user to run sudo without password. Since AUR programs must be installed
 # in a fakeroot environment, this is required for all builds with AUR.
-newperms "%wheel ALL=(ALL) NOPASSWD: ALL #WABS"
+newperms "%wheel ALL=(ALL) NOPASSWD: ALL #WAAS"
 
 # Make pacman and yay colorful and adds eye candy on the progress bar because why not.
 grep "^Color" /etc/pacman.conf >/dev/null || sed -i "s/^#Color/Color/" /etc/pacman.conf
