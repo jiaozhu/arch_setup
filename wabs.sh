@@ -111,8 +111,8 @@ putgitrepo() { # Downlods a gitrepo $1 and places the files in $2 only overwriti
 	dir=$(mktemp -d)
 	[ ! -d "$2" ] && mkdir -p "$2" && chown -R "$name:wheel" "$2"
 	chown -R "$name:wheel" "$dir"
-	mkdir -p /home/$name/Backup
-	sudo -u $name mv /home/$name/.* /home/$name/Backup
+	mkdir -p /root/Backup/$name
+	mv /home/$name/.* /root/Backup/$name
 	sudo -u "$name" git clone --bare https://github.com/jiaozhu/dotfiles /home/$name/.dotfiles
 	sudo -u "$name" /usr/bin/git --git-dir=/home/$name/.dotfiles/ --work-tree=/home/$name checkout
 	}
