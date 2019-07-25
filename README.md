@@ -9,11 +9,14 @@ curl -LO https://git.jiaozhu.blog/setup.sh
 sh setup.sh
 ```
 
+![虚拟机截图](https://files.tcpiptech.com/blog/7yykt.jpg)
+
 完事了 ：）
 
 ## 更新日志
 
 - 增加 ibus-rime 输入法
 - 增加 gucharmap
-
+- 生成 XDG 目录
+- 增加 neofetch
 

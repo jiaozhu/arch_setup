@@ -144,6 +144,7 @@ resetpulse() { dialog --infobox "Reseting Pulseaudio..." 4 50
 	sudo -n "$name" pulseaudio --start ;}
 
 finalize(){ \
+	xdg-user-dirs-update
 	dialog --title "All done!" --msgbox "Congrats! Provided there were no hidden errors, the script completed successfully and all the programs and configuration files should be in place.\\n\\nTo run the new graphical environment, log out and log back in as your new user, then run the command \"startx\" to start the graphical environment (it will start automatically in tty1).\\n\\n.t Wythe" 12 80
 	}
 
