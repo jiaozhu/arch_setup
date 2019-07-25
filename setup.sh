@@ -184,7 +184,6 @@ grep "ILoveCandy" /etc/pacman.conf >/dev/null || sed -i "/#VerbosePkgLists/a ILo
 # Use all cores for compilation.
 sed -i "s/-j2/-j$(nproc)/;s/^#MAKEFLAGS/MAKEFLAGS/" /etc/makepkg.conf
 
-
 manualinstall $aurhelper || error "Failed to install AUR helper."
 
 # The command that does all the installing. Reads the progs.csv file and

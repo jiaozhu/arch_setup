@@ -4,8 +4,8 @@
 
 ## 安装:
 
-```
-curl -LO http://git.jiaozhu.blog/setup.sh
+```bash
+curl -LO https://git.jiaozhu.blog/setup.sh
 sh setup.sh
 ```
 
