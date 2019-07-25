@@ -13,5 +13,7 @@ sh setup.sh
 
 ## 更新日志
 
+- 增加 ibus-rime 输入法
+- 增加 gucharmap
 
 
