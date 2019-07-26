@@ -198,9 +198,6 @@ putgitrepo "$dotfilesrepo" "/home/$name" "$repobranch"
 # Pulseaudio, if/when initially installed, often needs a restart to work immediately.
 [ -f /usr/bin/pulseaudio ] && resetpulse
 
-# Enable services here.
-serviceinit NetworkManager cronie
-
 # Most important command! Get rid of the beep!
 systembeepoff
 # Last message! Install complete!
