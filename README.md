@@ -9,7 +9,7 @@ curl -LO https://git.jiaozhu.blog/setup.sh
 sh setup.sh
 ```
 
-![虚拟机截图](https://files.tcpiptech.com/blog/7yykt.jpg)
+![虚拟机截图](https://files.tcpiptech.com/blog/arch_setup.png)
 
 完事了 ：）
 
