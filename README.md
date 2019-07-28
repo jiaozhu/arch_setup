@@ -5,7 +5,7 @@
 ## 安装:
 
 ```bash
-curl -LO https://git.jiaozhu.blog/setup.sh
+curl -LO https://files.jiaozhu.blog/setup.sh
 sh setup.sh
 ```
 
