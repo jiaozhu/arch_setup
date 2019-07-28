@@ -15,17 +15,43 @@ sh setup.sh
 
 ## 快捷键说明
 
-### 1、基础操作
+### 1. 基础操作
 
-- *$mod+Enter* : 启动终端 urxvt
-- *$mod+Shift+Enter* : 文件管理器 ranger
+- *$mod+Enter* : urxvt
+- *$mod+Shift+Enter* : ranger
 - *$mod+Shift+m* : ncmpcpp
 - *$mod+Shift+q* : 退出
 - *$mod+d* : rofi
 - *$mod+Shift+c* : 重新加载 i3wm 配置文件
 - *$mod+Shift+r* : 重启 i3wm
 - *$mod+Shift+e* : 退出 i3wm
+- *$mod+Shift+a* : 全屏幕截屏
+- *$mod+Shift+p* : 当前应用截屏
+- *$mod+Control+l* : 锁屏
+- *$mod+Delete* : 关机、注销、重启相关
 
+### 2. 导航
+
+切换焦点
+
+- *$mod+h* : 左
+- *$mod+j* : 下
+- *$mod+k* : 上
+- *$mod+l* : 右
+
+移动焦点
+
+- *$mod+Shift+h* : 移动到左边
+- *$mod+Shift+j* : 移动到右边
+- *$mod+Shift+k* : 移动到上面
+- *$mod+Shift+l* : 移动到下面
+
+切换布局
+
+- *$mod+b* : 水平布局
+- *$mod+v* : 垂直布局
+- *$mod+f* : 全屏
+- *$mod+r* : 重置窗口大小
 
 ## 更新日志
 
